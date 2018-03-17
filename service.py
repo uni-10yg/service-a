@@ -1,6 +1,7 @@
 import pika, logging
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 log_handler = logging.StreamHandler()
 log_handler.setFormatter(logging.Formatter(fmt='%(asctime)s: %(message)s', datefmt='%m.%d.%Y %I:%M:%S %p'))
 logger.addHandler(log_handler)
