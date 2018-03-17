@@ -11,5 +11,6 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 5000
+EXPOSE 6000
 
 ENTRYPOINT python service.py
