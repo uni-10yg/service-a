@@ -1,0 +1,1 @@
+deployment_pipeline(NAME: 'service-a', srcPath: '', binPath: '')
