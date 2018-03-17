@@ -1,11 +1,11 @@
-import pika, logging
+import pika, json
+from logger import root_logger
+from db import Database
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-log_handler = logging.StreamHandler()
-log_handler.setFormatter(logging.Formatter(fmt='%(asctime)s: %(message)s', datefmt='%m.%d.%Y %I:%M:%S %p'))
-logger.addHandler(log_handler)
 
+logger = root_logger.getChild(__name__)
+
+db = Database()
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq'))
 channel = connection.channel()
@@ -15,6 +15,9 @@ channel.queue_declare(queue='comm_queue')
 
 def callback(ch, method, properties, body):
     logger.info(" [x] Received %r" % body)
+    body_dict = json.loads(body.decode())
+    db.insert(body_dict.get('hash'), body_dict.get('salt'))
+    logger.debug(db.selectAll())
 
 channel.basic_consume(
     callback,
@@ -22,5 +25,4 @@ channel.basic_consume(
     no_ack=True
 )
 
-logger.info(' [*] Waiting for messages. To exit press CTRL+C')
 channel.start_consuming()
