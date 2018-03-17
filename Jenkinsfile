@@ -1,1 +1,1 @@
-deployment_pipeline(NAME: 'service-a', srcPath: '', binPath: '')
+deployment_pipeline(name: 'service-a', srcPath: '', binPath: '')
